@@ -50,13 +50,14 @@ public class ElasticJobConfig {
 
     @Bean(initMethod = "init")
     public SpringJobScheduler initSimpleElasticJob(){
-        //创建
+        //创建 JobEventConfiguration，配置数据源可监控job的运行。不配置，则不监控。
+        //自动创建两张表：job_execution_log、job_status_trace_log
         JobEventConfiguration jobEventConfiguration=new JobEventRdbConfiguration(dataSource);
         //创建SpringJobScheduler
         SpringJobScheduler springJobScheduler = new SpringJobScheduler(myTask,
                 coordinatorRegistryCenter,
-                createLiteJobConfiguration(myTask.getClass(), "0 0/5 * * * ?", 3, "0=1,1=2,2=3"),
-                jobEventConfiguration);
+                createLiteJobConfiguration(myTask.getClass(), "0 0/5 * * * ?", 3, "0=1,1=2,2=3")/*,
+                jobEventConfiguration*/);//参数jobEventConfiguration开启监控
         return springJobScheduler;
     }
 
