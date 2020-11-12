@@ -3,9 +3,11 @@ package com.hhf.controller;
 
 import com.hhf.entity.User;
 import com.hhf.service.IUserService;
+import com.hhf.socketio.service.MessageEventHandler;
 import com.hhf.util.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,9 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
+    private MessageEventHandler messageEventHandler;
+
+    @Autowired
     private IUserService userService;
 
     @RequestMapping("test/{info}")
@@ -25,6 +30,12 @@ public class UserController {
         User byId = userService.getById(1);
         log.info(byId.toString());
         return ResultUtils.getSuccessResult(info);
+    }
+
+    @GetMapping("/sendMessageOne")
+    public Map<String,Object> sendMessageOne(String empCode,String type){
+        messageEventHandler.sendMessageOne(empCode,type);
+        return ResultUtils.getSuccessResult("发送成功！");
     }
 
 }
