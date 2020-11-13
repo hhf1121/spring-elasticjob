@@ -26,7 +26,11 @@ public class MessageEventHandler {
      */
     @OnConnect
     public void onConnect(SocketIOClient client) {
+        String empCode = client.getHandshakeData().getSingleUrlParam("empCode");
         log.info("客户端:" + client.getSessionId() + "已连接");
+        socketIOClientMap.put(empCode,client);
+        //回发消息
+        client.sendEvent("register", "用户："+empCode+"注册成功");
     }
 
     /**
@@ -36,10 +40,12 @@ public class MessageEventHandler {
      */
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
-        SocketIOClient remove = socketIOClientMap.remove(client);
+        String empCode = client.getHandshakeData().getSingleUrlParam("empCode");
+        SocketIOClient remove = socketIOClientMap.remove(empCode);
         if(remove!=null){
-            log.info("客户端:" + client.getSessionId() + "断开连接");
+            log.info("客户端:" + client.getSessionId() + "断开连接:"+empCode);
         }
+        client.sendEvent("disconnect", "断开连接");
     }
 
     /**

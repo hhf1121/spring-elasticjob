@@ -1,6 +1,7 @@
 package com.hhf.socketio;
 
 import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.Transport;
 import com.corundumstudio.socketio.annotation.SpringAnnotationScanner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +14,10 @@ public class NettySocketioConfig {
     @Bean
     public SocketIOServer socketIOServer() {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
-        config.setHostname("localhost");
-        config.setPort(9092);
-
+//        config.setHostname("learn.hhf.com");
+        config.setPort(9091);
+//        config.setTransports(Transport.POLLING, Transport.WEBSOCKET);
+//        config.setOrigin("*");
         SocketIOServer server = new SocketIOServer(config);
         return server;
     }

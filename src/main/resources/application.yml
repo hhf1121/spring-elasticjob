@@ -8,7 +8,10 @@ spring:
     password: feixiang
   application:
     name: elastic-job-app
-
+  redis:
+    host: localhost
+    port: 6379
+    password: redis
 
 mybatis-plus:
   global-config:
