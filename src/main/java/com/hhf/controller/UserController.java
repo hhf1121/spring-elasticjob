@@ -7,6 +7,7 @@ import com.hhf.service.IUserService;
 import com.hhf.socketio.dto.WebSocketDto;
 import com.hhf.util.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,8 @@ public class UserController {
     @RequestMapping("test/{info}")
     public Map<String,Object> test(@PathVariable("info") String info ){
         User byId = userService.getById(1);
-        log.info(byId.toString());
-        return ResultUtils.getSuccessResult(info);
+        log.info(byId==null||StringUtils.isEmpty(byId.toString())?"null":byId.toString());
+        return ResultUtils.getSuccessResult(byId);
     }
 
     /**
